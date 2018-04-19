@@ -43,6 +43,9 @@ export const getInitialNodeDisplay = state =>
 export const getScrollToTop = state => state[NAME].scrollToTop
 export const shouldReportUdc = state => state[NAME].shouldReportUdc !== false
 export const shouldAutoComplete = state => state[NAME].autoComplete !== false
+export const getFromDate = state =>
+  state[NAME].fromDate || initialState.fromDate
+export const getToDate = state => state[NAME].toDate || initialState.toDate
 
 const browserSyncConfig = (host = 'https://auth.neo4j.com') => ({
   authWindowUrl: `${host}/indexNewBrowser.html`,
@@ -66,18 +69,20 @@ const initialState = {
   maxHistory: 30,
   theme: 'normal',
   useBoltRouting: false,
-  initCmd: ':play start',
+  initCmd: 'match(n:Property{id:382251}) return n',
   initialNodeDisplay: 300,
   maxNeighbours: 100,
   showSampleScripts: true,
   browserSyncDebugServer: null,
   maxRows: 1000,
   shouldReportUdc: true,
-  autoComplete: true,
+  autoComplete: false,
   scrollToTop: true,
   maxFrames: 30,
   editorAutocomplete: true,
-  useCypherThread: true
+  useCypherThread: true,
+  fromDate: 20150101,
+  toDate: 20150601
 }
 
 export default function settings (state = initialState, action) {

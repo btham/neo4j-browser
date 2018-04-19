@@ -96,8 +96,9 @@ export class Visualization extends Component {
     }
   }
   getNeighbours (id, currentNeighbourIds = []) {
-    const query = `MATCH path = (a)--(o)
+    const query = `MATCH path = (a)-[r:uniquemove]-(o)
                    WHERE id(a) = ${id}
+		           AND  ${this.props.toDate}>=r.date >= ${this.props.fromDate} 
                    AND NOT (id(o) IN[${currentNeighbourIds.join(',')}])
                    RETURN path, size((a)--()) as c
                    ORDER BY id(o)

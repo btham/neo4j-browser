@@ -24,10 +24,15 @@ export const NAME = 'params'
 const UPDATE = `${NAME}/UPDATE`
 const REPLACE = `${NAME}/REPLACE`
 
-const initialState = {}
-
-// Selectors
 export const getParams = state => state[NAME]
+export const getFromDate = state =>
+  state[NAME].fromDate || initialState.fromDate
+export const getToDate = state => state[NAME].toDate || initialState.toDate
+
+const initialState = {
+  fromDate: 20150101,
+  toDate: 20150601
+}
 
 // Reducer
 export default function reducer (state = initialState, action) {

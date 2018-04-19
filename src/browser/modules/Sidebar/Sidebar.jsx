@@ -26,6 +26,7 @@ import Documents from './Documents'
 import About from './About'
 import TabNavigation from 'browser-components/TabNavigation/Navigation'
 import Settings from './Settings'
+import Parameters from './Parameters'
 import BrowserSync from './../Sync/BrowserSync'
 import { isUserSignedIn } from 'shared/modules/sync/syncDuck'
 import { useBrowserSync } from 'shared/modules/features/featuresDuck'
@@ -41,6 +42,7 @@ import {
   DocumentsIcon,
   CloudSyncIcon,
   SettingsIcon,
+  ParamsIcon,
   AboutIcon
 } from 'browser-components/icons/Icons'
 
@@ -52,6 +54,7 @@ class Sidebar extends Component {
     const FavoritesDrawer = Favorites
     const DocumentsDrawer = Documents
     const SettingsDrawer = Settings
+    const ParametersDrawer = Parameters
     const AboutDrawer = About
     const topNavItemsList = [
       {
@@ -76,6 +79,12 @@ class Sidebar extends Component {
         title: 'Documentation',
         icon: isOpen => <DocumentsIcon isOpen={isOpen} />,
         content: DocumentsDrawer
+      },
+      {
+        name: 'Parameters',
+        title: 'Parameters',
+        icon: isOpen => <ParamsIcon isOpen={isOpen} />,
+        content: ParametersDrawer
       }
     ]
     const bottomNavItemsList = [

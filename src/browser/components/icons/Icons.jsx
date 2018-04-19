@@ -158,6 +158,16 @@ export const SettingsIcon = ({ isOpen }) => (
     className='sl sl-setting-gear'
   />
 )
+
+export const ParamsIcon = ({ isOpen }) => (
+  <IconContainer
+    isOpen={isOpen}
+    activeStyle={styles.white}
+    inactiveStyle={styles.inactive}
+    className='sl sl-param-gear'
+  />
+)
+
 export const AboutIcon = ({ isOpen }) => (
   <IconContainer
     isOpen={isOpen}

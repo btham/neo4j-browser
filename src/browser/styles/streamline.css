@@ -50,6 +50,9 @@
 .sl-setting-gear:before {
   content: "\64";
 }
+.sl-param-gear:before {
+    content: "\41";
+}
 .sl-book:before {
   content: "\65";
 }
