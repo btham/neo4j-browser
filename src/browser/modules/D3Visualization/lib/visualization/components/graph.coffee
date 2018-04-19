@@ -64,6 +64,24 @@ class neo.models.Graph
         @_nodes.push(node)
     @
 
+  removerelationship: (r) =>
+    @updateNode r.source
+    @updateNode r.target
+    @_relationships.splice(@_relationships.indexOf(r), 1)
+    delete @relationshipMap[r.id]
+
+  redrawRelationship: (r) =>
+    @updateNode r.source
+    @updateNode r.target
+    @_relationships.splice(@_relationships.indexOf(r), 1)
+    @_relationships.push(r)
+
+  redrawAllRelationship: =>
+    rels = @relationshipMap
+    for own id, rel of rels
+        @redrawRelationship rel
+    @
+
   removeNode: (node) =>
     if @findNode(node.id)?
       delete @nodeMap[node.id]
@@ -77,14 +95,48 @@ class neo.models.Graph
       node.minified = true
       @addNodes [node]
     @
-
   removeConnectedRelationships: (node) =>
-    for r in @findAllRelationshipToNode node
-      @updateNode r.source
-      @updateNode r.target
-      @_relationships.splice(@_relationships.indexOf(r), 1)
-      delete @relationshipMap[r.id]
+    rels = @findAllRelationshipToNode node
+    for r in rels
+      @redrawRelationship r
+      @removerelationship r
     @
+
+  removeFloatingNodeAndRelationship: (node) =>
+    floatingrels = @findAllRelationshipToFloatingNode node
+    for r in floatingrels
+      targetfixed = r.target.fixed ? 0
+      sourcefixed = r.source.fixed ? 0
+      if targetfixed is 0 or sourcefixed is 0
+        if r.source is node
+          if targetfixed is 0 
+            @removeConnectedRelationships r.target
+            @removeNode r.target
+        else
+          if sourcefixed is 0 
+            @removeConnectedRelationships r.source
+            @removeNode r.source
+    do @redrawAllRelationship
+
+
+  removeFloatingNodeAndAllRelationship: (node) =>
+    for r in @findAllRelationshipToNode node
+      targetfixed = r.target.fixed ? 0
+      sourcefixed = r.source.fixed ? 0
+      if targetfixed is 0 or sourcefixed is 0
+        if r.source is node
+          if targetfixed is 0 
+            @removeConnectedRelationships r.target
+            @removeNode r.target
+        else
+          if sourcefixed is 0 
+            @removeConnectedRelationships r.source
+            @removeNode r.source
+      else
+        @redrawRelationship(r)
+        @removerelationship r
+    @
+ 
 
   addRelationships: (relationships) =>
     for relationship in relationships
@@ -127,6 +179,10 @@ class neo.models.Graph
   findAllRelationshipToNode: (node) =>
     @_relationships
       .filter((relationship) -> relationship.source.id is node.id or relationship.target.id is node.id)
+
+  findAllRelationshipToFloatingNode: (node) =>
+    @_relationships
+      .filter((relationship) ->  (relationship.source.id is node.id and (relationship.target.fixed ? 0) is 0) or (relationship.target.id is node.id and (relationship.source.fixed ? 0) is 0 ))
 
    resetGraph: ->
       @nodeMap = {}

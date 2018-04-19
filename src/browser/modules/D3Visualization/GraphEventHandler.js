@@ -67,8 +67,15 @@ export class GraphEventHandler {
   }
 
   nodeClose (d) {
-    this.graph.removeConnectedRelationships(d)
+    this.graph.removeFloatingNodeAndAllRelationship(d)
     this.graph.removeNode(d)
+    this.deselectItem()
+    this.graphView.update()
+    this.graphModelChanged()
+  }
+
+  nodeCollapse (d) {
+    this.graph.removeFloatingNodeAndRelationship(d)
     this.deselectItem()
     this.graphView.update()
     this.graphModelChanged()
@@ -182,6 +189,7 @@ export class GraphEventHandler {
       .on('relationshipClicked', this.onRelationshipClicked.bind(this))
       .on('canvasClicked', this.onCanvasClicked.bind(this))
       .on('nodeClose', this.nodeClose.bind(this))
+      .on('nodeCollapse', this.nodeCollapse.bind(this))
       .on('nodeClicked', this.nodeClicked.bind(this))
       .on('nodeDblClicked', this.nodeDblClicked.bind(this))
       .on('nodeUnlock', this.nodeUnlock.bind(this))

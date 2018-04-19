@@ -23,7 +23,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 do ->
   noop = ->
 
-  numberOfItemsInContextMenu = 3
+  numberOfItemsInContextMenu = 4
 
   arc = (radius, itemNumber, width = 30) ->
     itemNumber = itemNumber - 1
@@ -98,7 +98,7 @@ do ->
     .remove()
 
   donutRemoveNode = new neo.Renderer(
-    onGraphChange: (selection, viz) -> createMenuItem(selection, viz, 'nodeClose', 1, 'remove_node', [-4, 0], '\uf00d', 'Remove node from the visualization')
+    onGraphChange: (selection, viz) -> createMenuItem(selection, viz, 'nodeClose', 1, 'remove_node', [0, 4], '\uf00d', 'Remove node from the visualization')
 
     onTick: noop
   )
@@ -110,7 +110,13 @@ do ->
   )
 
   donutUnlockNode = new neo.Renderer(
-    onGraphChange: (selection, viz) -> createMenuItem(selection, viz, 'nodeUnlock', 3, 'unlock_node', [4, 0], '\uf09c', 'Unlock the node to re-layout the graph')
+    onGraphChange: (selection, viz) -> createMenuItem(selection, viz, 'nodeUnlock', 3, 'unlock_node', [0, 4], '\uf09c', 'Unlock the node to re-layout the graph')
+
+    onTick: noop
+  )
+
+  donutCollapseNode = new neo.Renderer(
+    onGraphChange: (selection, viz) -> createMenuItem(selection, viz, 'nodeCollapse', 4, 'collapse_node', [0, 4], '\uf0c4', 'Collapse the node and remove connected items')
 
     onTick: noop
   )
@@ -118,3 +124,5 @@ do ->
   neo.renderers.menu.push(donutExpandNode)
   neo.renderers.menu.push(donutRemoveNode)
   neo.renderers.menu.push(donutUnlockNode)
+  neo.renderers.menu.push(donutCollapseNode)
+ 
